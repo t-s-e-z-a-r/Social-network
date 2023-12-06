@@ -1,16 +1,17 @@
-import { createSlice, configureStore, combineReducers } from '@reduxjs/toolkit'
+import { createSlice, configureStore, combineReducers, createSelector } from '@reduxjs/toolkit'
 import 'react-redux'
 
 const authSlice = createSlice({
   name: 'Auth',
   initialState: {
-    token: null,
+    token: localStorage.getItem('token') || null,
     tokenType: null 
   },
   reducers: {
     setCredentials: (state, action) => {
         state.token = action.payload.token;
         state.tokenType = action.payload.tokenType;
+        localStorage.setItem('token', action.payload.token);
       },
   }
 })
@@ -25,8 +26,8 @@ const userSlice = createSlice({
     },
     reducers: {
         setUserData: (state, action) => {
-            state.firstName = action.payload.firstName;
-            state.lastName = action.payload.lastName;
+            state.firstName = action.payload.first_name;
+            state.lastName = action.payload.last_name;
             state.email = action.payload.email;
             state.phone = action.payload.phone;
         }
@@ -43,4 +44,8 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
   reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+  getDefaultMiddleware({
+    serializableCheck: false,
+  }),
 });

@@ -1,7 +1,7 @@
-import { getDomain } from ".";
+import API from ".";
 
 export async function AuthRequest(endpoint, data) {
-    const url = getDomain() + endpoint;
+    const url = API.getDomain() + endpoint;
     const res = await fetch(url, {
         method: 'POST',
         headers: {
