@@ -6,7 +6,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { redirect } from "react-router-dom";
-import { POSTRequest } from '../../API';
+import { AuthRequest } from '../../API/Auth';
 
 function SignUp(props) {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -25,8 +25,8 @@ function SignUp(props) {
       dataObject[key] = value;
     });
     console.log(dataObject)
-    if(POSTRequest("users/registration", dataObject)){
-      return redirect("/MyAccount");
+    if(AuthRequest("registration", dataObject)){
+      return redirect("/SignIn");
     };
   };
 

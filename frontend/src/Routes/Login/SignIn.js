@@ -1,19 +1,22 @@
-// import './App.css';
 import React from 'react';
 import { TextField, Grid, Button } from "@mui/material"
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { POSTRequest } from '../../API';
 import { useNavigate} from "react-router-dom";
+import { AuthRequest } from '../../API/Auth';
+import { useDispatch } from "react-redux";
+import { setCredentials } from '../../API/slice';
 
-function SignIn() {
+function SignIn(props) {
   const [showPassword, setShowPassword] = React.useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-
+  
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
@@ -25,9 +28,11 @@ function SignIn() {
     formData.forEach((value, key) => {
       dataObject[key] = value;
     });
-    const response = await POSTRequest("users/login", dataObject);
+    const response = await AuthRequest("login", dataObject);
+    const responseData = await response.json()
     if (response && response.ok){
-      navigate("/MyAccount");
+      dispatch(setCredentials(responseData));
+      navigate("/myaccount");
     };
   };
 

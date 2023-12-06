@@ -1,9 +1,11 @@
-import React from 'react';
-
-const domain = "http://localhost:8000/";
+export const getDomain = () =>{
+    const domain = "http://localhost:8000/";
+    return domain
+}
+    
 
 export async function POSTRequest(endpoint, data) {
-    const url = domain + endpoint;
+    const url = getDomain() + endpoint;
     const res = await fetch(url, {
         method: 'POST',
         headers: {
@@ -15,7 +17,7 @@ export async function POSTRequest(endpoint, data) {
 }
 
 export async function GETRequest(endpoint, data) {
-    const url = domain + endpoint;
+    const url = getDomain() + endpoint;
     const res = await fetch(url, {
         method: 'GET',
         headers: {
@@ -27,7 +29,7 @@ export async function GETRequest(endpoint, data) {
 }
 
 export async function PUTRequest(endpoint, data) {
-    const url = domain + endpoint;
+    const url = getDomain() + endpoint;
     const res = await fetch(url, {
         method: 'PUT',
         headers: {
@@ -39,7 +41,7 @@ export async function PUTRequest(endpoint, data) {
 }
 
 export async function DELETERequest(endpoint, data) {
-    const url = domain + endpoint;
+    const url = getDomain() + endpoint;
     const res = await fetch(url, {
         method: 'DELETE',
         headers: {

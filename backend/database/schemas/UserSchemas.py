@@ -1,4 +1,3 @@
-# database\schemas\UserSchemas.py
 from pydantic import BaseModel
 
 class CreateUserSchemas(BaseModel):
@@ -11,3 +10,10 @@ class CreateUserSchemas(BaseModel):
 class LoginUserSchemas(BaseModel):
     email: str
     password: str
+    
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+    
+class TokenData(BaseModel):
+    id: str | None = None
