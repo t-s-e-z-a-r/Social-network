@@ -7,7 +7,9 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useNavigate} from "react-router-dom";
 import { AuthRequest } from '../../API/Auth';
 import { useDispatch } from "react-redux";
-import { setCredentials } from '../../API/slice';
+import { setCredentials, setUserData } from '../../API/slice';
+import API from '../../API';
+
 
 function SignIn(props) {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -32,6 +34,20 @@ function SignIn(props) {
     const responseData = await response.json()
     if (response && response.ok){
       dispatch(setCredentials(responseData));
+      try {
+        const res = await API.GET("users/myaccount");
+        console.log(res)
+        if (res.ok) {
+            const data = await res.json();
+            console.log("Response data:", data);
+            dispatch(setUserData(data))
+            
+        } else {
+            console.error("Error:", res.status, res.statusText);
+        }
+      } catch (error) {
+          console.error("Error:", error);
+      }
       navigate("/myaccount");
     };
   };

@@ -5,10 +5,11 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { redirect } from "react-router-dom";
 import { AuthRequest } from '../../API/Auth';
+import { useNavigate } from 'react-router-dom';
 
 function SignUp(props) {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -26,7 +27,7 @@ function SignUp(props) {
     });
     console.log(dataObject)
     if(AuthRequest("registration", dataObject)){
-      return redirect("/SignIn");
+      navigate("\signIn")
     };
   };
 

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from ..config import Base
 from . import Post
@@ -8,9 +8,13 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     first_name = Column(String, index=True)
     last_name = Column(String)
-    email = Column(String)
+    email = Column(String, unique=True)
     phone = Column(String)
     password = Column(String)
 
     # Define a one-to-many relationship with posts
     posts = relationship("Post", back_populates="user")
+    
+    __table_args__ = (
+        UniqueConstraint('email', 'phone', name='unique_email_phone'),
+    )

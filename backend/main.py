@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import orders, users, auth
+from routers import users, auth, posts
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
@@ -13,6 +13,6 @@ app.add_middleware(
 )
 
 
-app.include_router(orders.router, prefix="/orders", tags=["orders"])
+app.include_router(posts.router, prefix="/posts", tags=["posts"])
 app.include_router(users.router, prefix="/users", tags=["users"])
 app.include_router(auth.router, tags=["auth"])
