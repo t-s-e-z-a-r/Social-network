@@ -1,9 +1,5 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { logout } from '../API/slice';
-import { useNavigate } from 'react-router-dom';
 
 
 function Navigation(props) {

@@ -53,9 +53,8 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
     return verify_access_token(token, credentials_exception)
     
 
-def row2dict(row):
-    d = {}
-    for column in row.__table__.columns:
-        d[column.name] = str(getattr(row, column.name))
+from typing import Dict
+from sqlalchemy.engine.result import Row
 
-    return d
+def row2dict(row: Row) -> Dict:
+    return dict(row)
