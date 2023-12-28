@@ -1,18 +1,18 @@
 import React from 'react';
 import { useEffect, useState } from "react";
 import API from '../../API';
+import PostItem from './components/Item';
 
 function Posts(props) {
     const [posts, setPosts] = useState([]);
 
     const fetchData = async() =>{
         try{
-            const res = await (await API.GET("posts")).json()
+            const res = await API.GET("posts")
             setPosts(res);
         } catch(error) {
             console.log(error);
         }
- 
     } 
 
     useEffect(() => {
@@ -24,11 +24,7 @@ function Posts(props) {
             <h2>Post page</h2>
             <div>
                 {posts.length > 0 && posts.map((post) => (
-                    <div key={post.id}>
-                        <h3>{post.first_name} {post.last_name}</h3>
-                        <h4>{post.title}</h4>
-                        <h5>{post.text}</h5>
-                    </div>
+                    <PostItem post={post}/>
                 ))}
             </div>
         </>

@@ -36,7 +36,7 @@ class ApiService {
                 this.store.dispatch(logout());
             }
         }
-        return res;
+        return res.json();
     }
 
     async GET(endpoint) {
@@ -59,7 +59,7 @@ class ApiService {
                 this.store.dispatch(logout());
             }
         }
-        return res;
+        return res.json();
     }
 
     async PUT(endpoint, data) {
@@ -81,7 +81,7 @@ class ApiService {
                 this.store.dispatch(logout());
             }
         }
-        return res;
+        return res.json();
     }
 
     async DELETE(endpoint, data) {
@@ -103,7 +103,7 @@ class ApiService {
                 this.store.dispatch(logout());
             }
         }
-        return res;
+        return res.json();
     }
 }
 

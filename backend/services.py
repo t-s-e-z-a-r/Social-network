@@ -11,7 +11,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 SECRET_KEY = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 3000
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def hash_password(password):
@@ -56,5 +56,8 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
 from typing import Dict
 from sqlalchemy.engine.result import Row
 
-def row2dict(row: Row) -> Dict:
-    return dict(row)
+def row2dict(row):
+    """
+    Convert a SQLAlchemy result row to a dictionary.
+    """
+    return dict(zip(row.keys(), row))

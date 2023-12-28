@@ -14,7 +14,10 @@ class User(Base):
 
     # Define a one-to-many relationship with posts
     posts = relationship("Post", back_populates="user")
-    
+    likes = relationship("Like", back_populates="user") 
     __table_args__ = (
         UniqueConstraint('email', 'phone', name='unique_email_phone'),
     )
+    
+    def as_dict(self):
+        return {column.name: getattr(self, column.name) for column in self.__table__.columns}
