@@ -1,4 +1,5 @@
-import { createSlice, configureStore, combineReducers, createSelector } from '@reduxjs/toolkit'
+/* eslint-disable no-undef */
+import { createSlice, configureStore, combineReducers, createSelector, createAsyncThunk } from '@reduxjs/toolkit'
 import 'react-redux'
 
 const authSlice = createSlice({
@@ -35,7 +36,6 @@ const userSlice = createSlice({
       state.email = action.payload.email;
       state.phone = action.payload.phone;
 
-      // Save each value separately in localStorage
       localStorage.setItem('first_name', action.payload.first_name);
       localStorage.setItem('last_name', action.payload.last_name);
       localStorage.setItem('email', action.payload.email);
@@ -44,12 +44,42 @@ const userSlice = createSlice({
   }
 })
 
+const errorSlice = createSlice({
+  name: 'ErrorData',
+  initialState: {
+    errorCode: null,
+    errorText: null,
+  },
+  reducers: {
+    setError: (state, action) => {
+      // console.log("Payload:", action.payload); // Log the payload
+      state.errorCode = action.payload.code;
+      state.errorText = action.payload.text;
+    },
+    clearError: (state) => {
+      state.errorCode = null;
+      state.errorText = null;
+    },
+  },
+})
+
 export const { setCredentials, logout } = authSlice.actions;
 export const { setUserData} = userSlice.actions;
+export const { setError, clearError } = errorSlice.actions;
+
+export const errorHandler = data => {
+  return (dispatch, getState) => {
+    dispatch(setError(data))
+    setTimeout(() => {
+      dispatch(clearError())
+    }, 2000);
+  }
+}
 
 const rootReducer = combineReducers({
   auth: authSlice.reducer,
   user: userSlice.reducer,
+  error: errorSlice.reducer,
 });
 
 export const store = configureStore({

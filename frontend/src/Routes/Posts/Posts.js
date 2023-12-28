@@ -8,7 +8,6 @@ function Posts(props) {
     const fetchData = async() =>{
         try{
             const res = await (await API.GET("posts")).json()
-            console.log("RES", res)
             setPosts(res);
         } catch(error) {
             console.log(error);
@@ -18,7 +17,7 @@ function Posts(props) {
 
     useEffect(() => {
         fetchData()        
-    }, []); // Порожній мас
+    }, []);
 
     return (
         <>

@@ -1,4 +1,7 @@
 import { store } from './slice';
+import { logout } from './slice';
+import { errorHandler } from './slice';
+
 class ApiService {
     constructor(store) {
         this.store = store;
@@ -20,10 +23,19 @@ class ApiService {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.getAuthToken()}`,
             },
             body: JSON.stringify(data),
         });
-
+        if (!res.ok){
+            this.store.dispatch(errorHandler({
+                code: res.status,
+                text: res.statusText,
+            }));
+            if (res.status === 401) {
+                this.store.dispatch(logout());
+            }
+        }
         return res;
     }
 
@@ -37,7 +49,16 @@ class ApiService {
                 'Authorization': `Bearer ${this.getAuthToken()}`,
             },
         });
-
+        console.log("RESPONSE",res)
+        if (!res.ok){
+            this.store.dispatch(errorHandler({
+                code: res.status,
+                text: res.statusText,
+            }));
+            if (res.status === 401) {
+                this.store.dispatch(logout());
+            }
+        }
         return res;
     }
 
@@ -47,10 +68,19 @@ class ApiService {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.getAuthToken()}`,
             },
             body: JSON.stringify(data),
         });
-
+        if (!res.ok){
+            this.store.dispatch(errorHandler({
+                code: res.status,
+                text: res.statusText,
+            }));
+            if (res.status === 401) {
+                this.store.dispatch(logout());
+            }
+        }
         return res;
     }
 
@@ -60,12 +90,22 @@ class ApiService {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${this.getAuthToken()}`,
             },
             body: JSON.stringify(data),
         });
-
+        if (!res.ok){
+            this.store.dispatch(errorHandler({
+                code: res.status,
+                text: res.statusText,
+            }));
+            if (res.status === 401) {
+                this.store.dispatch(logout());
+            }
+        }
         return res;
     }
 }
 
 export default new ApiService(store);
+

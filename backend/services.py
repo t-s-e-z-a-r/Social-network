@@ -30,17 +30,17 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
-def verify_access_token(token: str, credentials_exeption):
+def verify_access_token(token: str, credentials_exсeption):
     try:
         print(token)
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         id: str = payload.get("user_id")
         if id is None:
             print("Here1")
-            raise credentials_exeption
+            raise credentials_exсeption
     except JWTError:
         print("Here2")
-        raise credentials_exeption
+        raise credentials_exсeption
     return id
 
 def get_current_user(token: str = Depends(oauth2_scheme)):
