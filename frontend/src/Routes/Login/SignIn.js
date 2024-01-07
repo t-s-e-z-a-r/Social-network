@@ -36,7 +36,7 @@ function SignIn(props) {
       dispatch(setCredentials(responseData));
       try {
         const res = await API.GET("users/myaccount");
-        console.log(res)
+        console.log("User", res)
         if (res.ok) {
             const data = await res.json();
             console.log("Response data:", data);
@@ -44,14 +44,14 @@ function SignIn(props) {
             
         } else {
             console.error("Error:", res.status, res.statusText);
-        }
+          }
+        navigate("/myaccount");
       } catch (error) {
           console.error("Error:", error);
       }
-      navigate("/myaccount");
     };
   };
-
+  
   return (
       <div id="signUpDiv" style={{margin:"80px 200px", padding:"10px"}}>
         <h1 className='text-center'>Login to your account</h1>

@@ -11,6 +11,8 @@ import Navigation from './Components/Nav';
 import Posts from './Routes/Posts/Posts';
 import About from './Routes/About/About';
 import Error from './Components/Error';
+import Chat from './Routes/Chat/Chat';
+import ChatsList from './Routes/Chat/ChatList';
 
 function App() {
   const { pathname } = useLocation();
@@ -19,13 +21,13 @@ function App() {
   return (
     <>
       <Header />
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: 'flex',  height: 'calc(100vh - var(--nav-total-height, 0px))'  }}>
       {!isSignInOrSignUp && (
           <div style={{ width: '200px', borderRight: '1px solid #ccc' }}>
             <Navigation />
           </div>
         )}
-        <div style={{ flex: 1, padding: '20px' }}>
+        <div style={{ flex: 1, padding: '20px'}}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/signUp" element={<SignUp />} />
@@ -33,6 +35,8 @@ function App() {
             <Route path="/myaccount" element={<MyAccount />} />
             <Route path="/posts" element={<Posts />} />
             <Route path="/about" element={<About />} />
+            <Route path="/chats" element={<ChatsList />} />
+            <Route path="/chats/:id" element={<Chat />} />
           </Routes>
         </div>
       </div>

@@ -1,8 +1,8 @@
-"""New main migration
+"""Initial migration
 
-Revision ID: b16c3adb4ad4
+Revision ID: 56e1f3397991
 Revises: 
-Create Date: 2023-12-28 23:32:03.623096
+Create Date: 2024-01-07 19:57:58.980753
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'b16c3adb4ad4'
+revision: str = '56e1f3397991'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -33,6 +33,16 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_users_first_name'), 'users', ['first_name'], unique=False)
     op.create_index(op.f('ix_users_id'), 'users', ['id'], unique=False)
+    op.create_table('chat',
+    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('sender_id', sa.Integer(), nullable=True),
+    sa.Column('chat_id', sa.String(), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=True),
+    sa.ForeignKeyConstraint(['sender_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
+    )
+    op.create_index(op.f('ix_chat_id'), 'chat', ['id'], unique=False)
+    op.create_index(op.f('ix_chat_sender_id'), 'chat', ['sender_id'], unique=False)
     op.create_table('posts',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
@@ -66,6 +76,9 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_posts_user_id'), table_name='posts')
     op.drop_index(op.f('ix_posts_id'), table_name='posts')
     op.drop_table('posts')
+    op.drop_index(op.f('ix_chat_sender_id'), table_name='chat')
+    op.drop_index(op.f('ix_chat_id'), table_name='chat')
+    op.drop_table('chat')
     op.drop_index(op.f('ix_users_id'), table_name='users')
     op.drop_index(op.f('ix_users_first_name'), table_name='users')
     op.drop_table('users')

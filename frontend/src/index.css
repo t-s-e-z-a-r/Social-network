@@ -83,3 +83,31 @@ form {
   text-align: center;
   z-index: 9999;
 }
+.spacerDiv {
+  height: 40px;
+}
+
+.message-input-container {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px;
+  width: 60%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.message-input-container input {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 20px;
+}

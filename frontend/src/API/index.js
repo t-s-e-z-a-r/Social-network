@@ -1,4 +1,4 @@
-import { store } from './slice';
+import { store } from '../store';
 import { logout } from './slice';
 import { errorHandler } from './slice';
 
@@ -8,13 +8,24 @@ class ApiService {
     }
 
     getAuthToken() {
-    const state = this.store.getState();
-    return state.auth.token;
+        const state = this.store.getState();
+        return state.auth.token;
     }
 
     getDomain() {
         const domain = "http://localhost:8000/";
         return domain;
+    }
+
+    WebSocket(first_id, second_id){
+        let connectionId
+        if(first_id < second_id){
+            connectionId = `${first_id}${second_id}`
+        }
+        else{
+            connectionId = `${second_id}${first_id}`
+        }
+        return new WebSocket(`ws://localhost:8000/chats/ws/${connectionId}`)
     }
 
     async POST(endpoint, data) {
@@ -36,7 +47,7 @@ class ApiService {
                 this.store.dispatch(logout());
             }
         }
-        return res.json();
+        return res;
     }
 
     async GET(endpoint) {
@@ -49,7 +60,6 @@ class ApiService {
                 'Authorization': `Bearer ${this.getAuthToken()}`,
             },
         });
-        console.log("RESPONSE",res)
         if (!res.ok){
             this.store.dispatch(errorHandler({
                 code: res.status,
@@ -59,7 +69,7 @@ class ApiService {
                 this.store.dispatch(logout());
             }
         }
-        return res.json();
+        return res;
     }
 
     async PUT(endpoint, data) {
@@ -81,7 +91,7 @@ class ApiService {
                 this.store.dispatch(logout());
             }
         }
-        return res.json();
+        return res;
     }
 
     async DELETE(endpoint, data) {
@@ -103,7 +113,7 @@ class ApiService {
                 this.store.dispatch(logout());
             }
         }
-        return res.json();
+        return res;
     }
 }
 

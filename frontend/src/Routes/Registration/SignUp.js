@@ -26,8 +26,8 @@ function SignUp(props) {
       dataObject[key] = value;
     });
     console.log(dataObject)
-    if(AuthRequest("registration", dataObject)){
-      navigate("\signIn")
+    if(AuthRequest("registration", dataObject).ok){
+      navigate("/signIn")
     };
   };
 

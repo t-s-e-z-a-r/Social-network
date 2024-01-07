@@ -36,10 +36,8 @@ def verify_access_token(token: str, credentials_exсeption):
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         id: str = payload.get("user_id")
         if id is None:
-            print("Here1")
             raise credentials_exсeption
     except JWTError:
-        print("Here2")
         raise credentials_exсeption
     return id
 

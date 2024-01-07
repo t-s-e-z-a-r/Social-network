@@ -9,7 +9,7 @@ function Posts(props) {
     const fetchData = async() =>{
         try{
             const res = await API.GET("posts")
-            setPosts(res);
+            setPosts(await res.json());
         } catch(error) {
             console.log(error);
         }

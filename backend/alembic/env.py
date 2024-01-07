@@ -8,7 +8,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
-from database.models import User, Post
+from database.models import *
 from database.config import Base
 
 # this is the Alembic Config object, which provides

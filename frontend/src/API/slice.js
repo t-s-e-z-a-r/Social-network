@@ -1,8 +1,8 @@
 /* eslint-disable no-undef */
-import { createSlice, configureStore, combineReducers, createSelector, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import 'react-redux'
 
-const authSlice = createSlice({
+export const authSlice = createSlice({
   name: 'Auth',
   initialState: {
     token: localStorage.getItem('token') || null,
@@ -15,13 +15,19 @@ const authSlice = createSlice({
     logout: (state, action) => {
       state.token = null;
       localStorage.removeItem('token');
+      localStorage.removeItem('id');
+      localStorage.removeItem('first_name');
+      localStorage.removeItem('last_name');
+      localStorage.removeItem('email');
+      localStorage.removeItem('phone');
     }
   }
 })
 
-const userSlice = createSlice({
+export const userSlice = createSlice({
   name: 'UserData',
   initialState: {
+    id: localStorage.getItem('id') || null,
     firstName: localStorage.getItem('first_name') || null,
     lastName: localStorage.getItem('last_name') || null,
     email: localStorage.getItem('email') || null,
@@ -29,11 +35,13 @@ const userSlice = createSlice({
   },
   reducers: {
     setUserData: (state, action) => {
+      state.id = action.payload.id;
       state.firstName = action.payload.first_name;
       state.lastName = action.payload.last_name;
       state.email = action.payload.email;
       state.phone = action.payload.phone;
 
+      localStorage.setItem('id', action.payload.id);
       localStorage.setItem('first_name', action.payload.first_name);
       localStorage.setItem('last_name', action.payload.last_name);
       localStorage.setItem('email', action.payload.email);
@@ -42,7 +50,7 @@ const userSlice = createSlice({
   }
 })
 
-const errorSlice = createSlice({
+export const errorSlice = createSlice({
   name: 'ErrorData',
   initialState: {
     errorCode: null,
@@ -50,7 +58,6 @@ const errorSlice = createSlice({
   },
   reducers: {
     setError: (state, action) => {
-      // console.log("Payload:", action.payload); // Log the payload
       state.errorCode = action.payload.code;
       state.errorText = action.payload.text;
     },
@@ -73,17 +80,3 @@ export const errorHandler = data => {
     }, 2000);
   }
 }
-
-const rootReducer = combineReducers({
-  auth: authSlice.reducer,
-  user: userSlice.reducer,
-  error: errorSlice.reducer,
-});
-
-export const store = configureStore({
-  reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-  getDefaultMiddleware({
-    serializableCheck: false,
-  }),
-});
