@@ -1,28 +1,33 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import API from '../../API';
+import Message from './components/Message';
+import { setChatHistory, updateChatHistory } from './slice';
 
 function Chat(props) {
     const [message, setMessage] = React.useState('');
     const [ws, setWs] = React.useState(null); // Initialize ws state
-    const userData = useSelector((state) => state.chat);
+    const chatData = useSelector((state) => state.chat);
     const user = useSelector((state) => state.user);
-
+    const dispatch = useDispatch()
     React.useEffect(() => {
-        const ws = API.WebSocket(user.id, userData.id);
+        const ws = API.WebSocket(user.id, chatData.id);
 
         ws.onopen = (data) => {
-            console.log("Connected", data);
+            console.log("Connected");
             const historyRequest = {
-                "type":"get",
+                type:"get",
+                user: user.id,
             }
             ws.send(JSON.stringify(historyRequest))
             setWs(ws);
         };
 
         ws.onmessage = (event) => {
-            // const receivedMessage = JSON.parse(event.data);
-            console.log("Received");
+            const receivedMessage = JSON.parse(event.data);
+            console.log(receivedMessage)
+            messageHandler(receivedMessage)
         };
 
         return () => {
@@ -30,12 +35,26 @@ function Chat(props) {
                 ws.close();
             }
         };
-    }, [user.id, userData.id]);
+    }, [user.id, chatData.id]);
+
+    const messageHandler = (message) => {
+        switch (message.type) {
+            case "history":
+                dispatch(setChatHistory(message.data))
+                break;
+            case "new":
+                dispatch(updateChatHistory(message.data))
+                break;
+                    
+            default:
+                return 0
+        }
+    }
 
     const sendMessage = () => {
-        console.log("State", ws?.readyState);
         if (ws?.readyState === WebSocket.OPEN) {
             const messageToSend = {
+                type: "add",
                 text: message,
                 sender: user.id,
             };
@@ -46,7 +65,21 @@ function Chat(props) {
 
     return (
         <div className="chat-container">
-            <h2>Chat with {userData.firstName} {userData.lastName}</h2>
+            <h2>Chat with {chatData.firstName} {chatData.lastName}</h2>
+            <div className='chat-history'>
+            {chatData.chatHistory && chatData.chatHistory.map((message, index) => {
+                console.log("Message:", message);
+                console.log("User:", user);
+
+                return (
+                    <Message
+                        key={index}
+                        message={message}
+                        classValue={user.id == message.sender_id ? "myMessage" : "someMessage"}
+                    />
+                );
+            })}
+            </div>
             <div className="message-input-container">
                 <input
                     type="text"

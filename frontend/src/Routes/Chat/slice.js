@@ -23,7 +23,10 @@ export const chatHistorySlice = createSlice({
             state.email = action.payload.email;
             state.phone = action.payload.phone;
         },
+        updateChatHistory: (state, action) => {
+            state.chatHistory = [...state.chatHistory, action.payload];
+        }
     }
 })
 
-export const {setChatHistory, setUserChatData} = chatHistorySlice.actions 
+export const {setChatHistory, setUserChatData, updateChatHistory} = chatHistorySlice.actions 

@@ -6,7 +6,6 @@ function ChatsList(props) {
     const [users, setUsers] = React.useState([])
     const fetchData = async () =>{
         const response = await API.GET("users")
-        console.log("Chats",response)
         setUsers(await response.json())
     }
     React.useEffect(() => {

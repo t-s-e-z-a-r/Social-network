@@ -90,13 +90,14 @@ form {
 .message-input-container {
   position: fixed;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  /* left: 50%; */
+  /* transform: translateX(-50%); */
   padding: 10px;
-  width: 60%;
+  width: 80%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  justify-self: end;
 }
 
 .message-input-container input {
@@ -107,7 +108,33 @@ form {
 .chat-container {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   height: 100%;
+  padding: 20px 20px 1px 20px;
+}
+
+.chat-history {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+  flex: 1; /* Allow chat-history to take up the remaining vertical space */
+  overflow: auto;
   padding: 20px;
+}
+
+.message {
+  padding: 5px 10px;
+  margin: 5px 0px;
+  border-radius: 30px;
+}
+
+.myMessage {
+  background-color: #5276acb4;
+  align-self: flex-end;
+}
+
+.someMessage {
+  background-color: #2d3ab0b4;
+  align-self: flex-start;
 }
