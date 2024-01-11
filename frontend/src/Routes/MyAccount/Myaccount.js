@@ -2,14 +2,13 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 function MyAccount(props) {
-    const userData = useSelector((state) => state.user)
-    const loginData = useSelector((state) => state.auth)
+    const userData = useSelector((state) => state.auth)
     const handleSubmit = async () => {
     }
 
     return (
         <div>
-            {userData.firstName && loginData.token ? (
+            {userData.firstName && userData.token ? (
                 <React.Fragment>
                     <h4>You have entered in your account</h4>
                     <button onClick={handleSubmit}>Get</button>

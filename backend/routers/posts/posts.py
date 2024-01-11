@@ -12,7 +12,7 @@ router = APIRouter()
 def read_posts(db: Session = Depends(get_db), user_id: str = Depends(get_current_user)):
     # Use exists to check if the current user has liked a post
     liked_subquery = (
-        exists().where((Like.user_id == user_id) & (Like.post_id == Post.id))
+        exists().where((Like.user_id == int(user_id)) & (Like.post_id == Post.id))
     )
 
     # Construct the main query, including the additional field 'liked'
@@ -47,7 +47,6 @@ def add_post(request_data: dict, db: Session = Depends(get_db), user_id: str = D
 @router.put("/")
 def update_post(request_data: dict, db: Session=Depends(get_db), user_id: str = Depends(get_current_user)):
     like = db.query(Like).filter(and_(Like.user_id == user_id, Like.post_id == request_data.get("id"))).first()
-    print(f"LIke ------{like}")
     
     if request_data.get("liked") and like == None:
         add_like(db, request_data.get("id"), user_id)

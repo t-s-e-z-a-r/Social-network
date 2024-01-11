@@ -29,24 +29,25 @@ def login_user(request_data: LoginUserSchemas, db: Session = Depends(get_db)):
         }
 
 @router.post("/google-login")
-async def google_login_callback(request_data: GoogleLoginRequest):
+async def google_login_callback(request_data: GoogleLoginRequest, db: Session = Depends(get_db)):
     try:
         id_token = request_data.id_token
-        print(f"Token {id_token}")
         user_info = jwt.decode(id_token, options={"verify_signature": False})
-        print(f"User {user_info}")
-        access_token = create_access_token(data={"user_id": user_info["sub"]})
-        print(f"Token access {access_token}")
-        user = UserResponse(
-            id=user_info["sub"],
-            first_name=user_info["given_name"],
-            last_name=user_info["family_name"],
-            email=user_info["email"]
-        )
-        print(f"User schema {user}")
+        user = db.query(User).filter(User.google_id == user_info["sub"]).first()
+        if user == None:
+            user = User(
+                first_name=user_info["given_name"],
+                last_name=user_info["family_name"],
+                email=user_info["email"],
+                google_id=user_info["sub"]
+                )
+            db.add(user)
+            db.commit()
+        access_token = create_access_token(data={"user_id": user.as_dict()["id"]})
+        user_data = UserResponse(**user.as_dict())
         return {
             "token": access_token, 
-            "user": user
+            "user": user_data
             }
 
     except Exception as e:
