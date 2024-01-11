@@ -32,8 +32,7 @@ function Header(props) {
     };
   }, []);
 
-  const userData = useSelector((state) => state.user);
-  const tokenData = useSelector((state) => state.auth);
+  const userData = useSelector((state) => state.auth);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -46,7 +45,7 @@ function Header(props) {
     <nav className='d-flex flex-row justify-content-between' style={{ paddingTop: '20px' }}>
       <NavLink style={{ textDecoration: 'none' }} to={"/"}><h1>Social Network</h1></NavLink>
       <div className='d-flex justify-content-center align-items-center'>
-        {userData && userData.firstName && userData.lastName && tokenData.token ? 
+        {userData && userData.firstName && userData.lastName && userData.token ? 
         (<div>
           <h5>Welcome {userData.firstName} {userData.lastName}</h5>
           <p className="text-end pe-auto" onClick={handleLogout}>Logout()</p>

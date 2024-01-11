@@ -6,11 +6,26 @@ export const authSlice = createSlice({
   name: 'Auth',
   initialState: {
     token: localStorage.getItem('token') || null,
+    id: localStorage.getItem('id') || null,
+    firstName: localStorage.getItem('first_name') || null,
+    lastName: localStorage.getItem('last_name') || null,
+    email: localStorage.getItem('email') || null,
+    phone: localStorage.getItem('phone') || null,
   },
   reducers: {
     setCredentials: (state, action) => {
         state.token = action.payload.token;
         localStorage.setItem('token', action.payload.token);
+        state.id = action.payload.id;
+        state.firstName = action.payload.user.first_name;
+        state.lastName = action.payload.user.last_name;
+        state.email = action.payload.user.email;
+        state.phone = action.payload.user.phone;
+        localStorage.setItem('id', action.payload.user.id);
+        localStorage.setItem('first_name', action.payload.user.first_name);
+        localStorage.setItem('last_name', action.payload.user.last_name);
+        localStorage.setItem('email', action.payload.user.email);
+        localStorage.setItem('phone', action.payload.user.phone);
       },
     logout: (state, action) => {
       state.token = null;
@@ -21,32 +36,6 @@ export const authSlice = createSlice({
       localStorage.removeItem('email');
       localStorage.removeItem('phone');
     }
-  }
-})
-
-export const userSlice = createSlice({
-  name: 'UserData',
-  initialState: {
-    id: localStorage.getItem('id') || null,
-    firstName: localStorage.getItem('first_name') || null,
-    lastName: localStorage.getItem('last_name') || null,
-    email: localStorage.getItem('email') || null,
-    phone: localStorage.getItem('phone') || null,
-  },
-  reducers: {
-    setUserData: (state, action) => {
-      state.id = action.payload.id;
-      state.firstName = action.payload.first_name;
-      state.lastName = action.payload.last_name;
-      state.email = action.payload.email;
-      state.phone = action.payload.phone;
-
-      localStorage.setItem('id', action.payload.id);
-      localStorage.setItem('first_name', action.payload.first_name);
-      localStorage.setItem('last_name', action.payload.last_name);
-      localStorage.setItem('email', action.payload.email);
-      localStorage.setItem('phone', action.payload.phone);
-    },
   }
 })
 
@@ -69,7 +58,6 @@ export const errorSlice = createSlice({
 })
 
 export const { setCredentials, logout } = authSlice.actions;
-export const { setUserData} = userSlice.actions;
 export const { setError, clearError } = errorSlice.actions;
 
 export const errorHandler = data => {

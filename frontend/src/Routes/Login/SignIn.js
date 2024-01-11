@@ -7,9 +7,9 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useNavigate} from "react-router-dom";
 import { AuthRequest } from '../../API/Auth';
 import { useDispatch } from "react-redux";
-import { setCredentials, setUserData } from '../../API/slice';
+import { setCredentials } from '../../API/slice';
 import API from '../../API';
-
+import { GoogleLogin } from '@react-oauth/google';
 
 function SignIn(props) {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -34,24 +34,19 @@ function SignIn(props) {
     const responseData = await response.json()
     if (response && response.ok){
       dispatch(setCredentials(responseData));
-      try {
-        const res = await API.GET("users/myaccount");
-        console.log("User", res)
-        if (res.ok) {
-            const data = await res.json();
-            console.log("Response data:", data);
-            dispatch(setUserData(data))
-            
-        } else {
-            console.error("Error:", res.status, res.statusText);
-          }
         navigate("/myaccount");
-      } catch (error) {
-          console.error("Error:", error);
-      }
     };
   };
   
+
+  const handleCredentialResponse = async(data) => {
+    const response = await AuthRequest("google-login", {"id_token": data.credential});
+    const responseData = await response.json()
+    if (response && response.ok){
+      dispatch(setCredentials(responseData));
+    }
+  }
+
   return (
       <div id="signUpDiv" style={{margin:"80px 200px", padding:"10px"}}>
         <h1 className='text-center'>Login to your account</h1>
@@ -84,6 +79,13 @@ function SignIn(props) {
             </Grid>
           </Grid>
           <Button type='submit' variant="contained" style={{width:"300px", marginBottom:"30px"}}>Submit</Button>
+          <GoogleLogin
+            onSuccess={handleCredentialResponse}
+            onError={() => {
+              console.log('Login Failed');
+            }}
+            useOneTap
+          />
         </form>
       </div>
   );
