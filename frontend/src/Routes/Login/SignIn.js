@@ -34,7 +34,7 @@ function SignIn(props) {
     const responseData = await response.json()
     if (response && response.ok){
       dispatch(setCredentials(responseData));
-        navigate("/myaccount");
+      navigate("/myaccount");
     };
   };
   

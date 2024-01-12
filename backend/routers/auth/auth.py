@@ -23,9 +23,10 @@ def login_user(request_data: LoginUserSchemas, db: Session = Depends(get_db)):
         raise HTTPException(status_code=401, detail="Invalid credentials")
     token = create_access_token(data={"user_id": user.id})
     user = db.query(User).get(user.id)
+    userData = UserResponse(**user.as_dict())
     return {
         "token": token,
-        "user": user    
+        "user": userData  
         }
 
 @router.post("/google-login")

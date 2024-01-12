@@ -1,2 +1,2 @@
-from .auth import router
+from .auth import *
 from .schemas import GoogleLoginRequest

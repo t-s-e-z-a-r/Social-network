@@ -18,7 +18,7 @@ function SignUp(props) {
     event.preventDefault();
   };
   
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
     const dataObject = {};
@@ -26,7 +26,8 @@ function SignUp(props) {
       dataObject[key] = value;
     });
     console.log(dataObject)
-    if(AuthRequest("registration", dataObject).ok){
+    const response = await AuthRequest("registration", dataObject)
+    if (response && response.ok){
       navigate("/signIn")
     };
   };

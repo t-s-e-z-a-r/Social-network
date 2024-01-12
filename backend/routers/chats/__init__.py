@@ -1,1 +1,1 @@
-from .chats import router
+from .chats import *
