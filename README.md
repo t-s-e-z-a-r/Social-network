@@ -1,11 +1,33 @@
-This project of social network 
+# Social Network Project
 
-It allow:
-    To create and login in users' accounts
-    To CRUD users' post
+This project is a social network with several key features, including user account management, post creation and management, JWT authentication, and real-time communication through WebSocket for user chats.
 
-Implemented JWT authentication
+## Features:
 
-Added websocket connection to implenent chats between users
+1. **User Management:**
+   - Users can create accounts on the platform.
+   - Secure login system with JWT authentication.
 
-To be continiued
+2. **Post Management:**
+   - CRUD operations for managing users' posts.
+   - Users can create, read, update, and delete their posts.
+
+3. **Authentication:**
+   - Utilizes JWT for secure and efficient user authentication.
+
+4. **Real-Time Communication:**
+   - WebSocket connections for real-time chats between users.
+
+## Getting Started:
+
+To start the project, follow these steps:
+
+1. Run the following command to start the project:
+   
+bash ./scripts/base.sh start
+
+2. Run the following command to perform a database upgrade:
+
+bash ./scripts/base.sh db_upgrade
+
+These commands are essential for the initial setup and configuration of the project.
