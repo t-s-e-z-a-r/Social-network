@@ -2,6 +2,9 @@ from pydantic import BaseModel
 
 class GoogleLoginRequest(BaseModel):
     id_token: str
+
+class FacebookLoginRequest(BaseModel):
+    user: dict
     
 class UserResponse(BaseModel):
     id: int

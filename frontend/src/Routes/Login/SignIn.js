@@ -4,12 +4,20 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { useNavigate} from "react-router-dom";
+import { Await, useNavigate} from "react-router-dom";
 import { AuthRequest } from '../../API/Auth';
 import { useDispatch } from "react-redux";
 import { setCredentials } from '../../API/slice';
 import API from '../../API';
 import { GoogleLogin } from '@react-oauth/google';
+import {
+  LoginSocialFacebook,
+} from 'reactjs-social-login'
+
+import {
+  FacebookLoginButton
+} from 'react-social-login-buttons'
+
 
 function SignIn(props) {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -39,8 +47,19 @@ function SignIn(props) {
   };
   
 
-  const handleCredentialResponse = async(data) => {
+  const handleGoogleResponse = async(data) => {
     const response = await AuthRequest("google-login", {"id_token": data.credential});
+    const responseData = await response.json()
+    if (response && response.ok){
+      dispatch(setCredentials(responseData));
+      navigate("/myaccount");
+    }
+  }
+
+  const handleFacebookResponse = async({provider, data}) => {
+    const userData = await fetch(`https://graph.facebook.com/v13.0/${data.userID}?fields=id,name,email,picture&access_token=${data.accessToken}`)
+    const userDataJSON = await userData.json();
+    const response = await AuthRequest("facebook-login", {"user": userDataJSON});
     const responseData = await response.json()
     if (response && response.ok){
       dispatch(setCredentials(responseData));
@@ -81,12 +100,23 @@ function SignIn(props) {
           </Grid>
           <Button type='submit' variant="contained" style={{width:"300px", marginBottom:"30px"}}>Submit</Button>
           <GoogleLogin
-            onSuccess={handleCredentialResponse}
+            onSuccess={handleGoogleResponse}
             onError={() => {
               console.log('Login Failed');
             }}
             useOneTap
           />
+           <LoginSocialFacebook
+            isOnlyGetToken
+            appId="910030630517937"
+            onResolve={handleFacebookResponse}
+            onReject={(err) => {
+              console.log(err)
+            }}
+          >
+            <FacebookLoginButton />
+          </LoginSocialFacebook>
+
         </form>
       </div>
   );

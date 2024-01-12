@@ -10,7 +10,7 @@ from authlib.integrations.starlette_client import OAuth, OAuthError
 from .googleApi import CLIENT_ID, CLIENT_SECRET
 from starlette.requests import Request
 import jwt
-from .schemas import GoogleLoginRequest, LoginResponse, UserResponse
+from .schemas import GoogleLoginRequest, LoginResponse, UserResponse, FacebookLoginRequest
 
 router = APIRouter()
 
@@ -34,7 +34,7 @@ async def google_login_callback(request_data: GoogleLoginRequest, db: Session = 
     try:
         id_token = request_data.id_token
         user_info = jwt.decode(id_token, options={"verify_signature": False})
-        user = db.query(User).filter(User.google_id == user_info["sub"]).first()
+        user = db.query(User).filter(User.email == user_info["email"]).first()
         if user == None:
             user = User(
                 first_name=user_info["given_name"],
@@ -55,6 +55,31 @@ async def google_login_callback(request_data: GoogleLoginRequest, db: Session = 
         print(e)
         # raise HTTPException(status_code=401, detail="Google authentication failed")
 
+@router.post("/facebook-login")
+async def google_login_callback(request_data: FacebookLoginRequest, db: Session = Depends(get_db)):
+    try:
+        user_info = request_data.user
+        user = db.query(User).filter(User.email == user_info["email"]).first()
+        if user == None:
+            user_split = user_info["name"].split(" ")
+            print(user_split)
+            user = User(
+                first_name=user_split[0],
+                last_name=user_split[1],
+                email=user_info["email"],
+                facebook_id=user_info["id"]
+                )
+            db.add(user)
+            db.commit()
+        access_token = create_access_token(data={"user_id": user.as_dict()["id"]})
+        user_data = UserResponse(**user.as_dict())
+        return {
+            "token": access_token, 
+            "user": user_data
+            }
+
+    except Exception as e:
+        print(e)
 
 @router.post("/registration")
 def create_user(request_data: CreateUserSchemas, db: Session = Depends(get_db)):

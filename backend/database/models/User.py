@@ -12,6 +12,7 @@ class User(Base):
     phone = Column(String)
     password = Column(String)
     google_id = Column(String, nullable=True)
+    facebook_id = Column(String, nullable=True)
 
     chats = relationship("Chat", back_populates="user")    
     posts = relationship("Post", back_populates="user")

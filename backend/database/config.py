@@ -5,6 +5,7 @@ import time
 
 time.sleep(3)
 DATABASE_URL = "postgresql://database:database@postgres:5432/database"
+# DATABASE_URL = "postgresql://database:database@localhost:5432/database"
 
 engine = create_engine(DATABASE_URL)
 Base = declarative_base()
