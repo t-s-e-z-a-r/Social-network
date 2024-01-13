@@ -10,3 +10,4 @@ httpx
 pyjwt
 typing
 alembic
+uvicorn[standard]

@@ -7,7 +7,7 @@ start() {
 }
 
 db_upgrade() {
-    docker exec -it socialnetwork_backend_1 alembic upgrade head
+  docker exec -it socialnetwork_backend_1 alembic upgrade head
 }
 
 case "$COMMAND" in

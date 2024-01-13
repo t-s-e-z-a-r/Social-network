@@ -34,5 +34,7 @@ services:
       - ./backend:/app/backend
     ports:
       - "8000:8000"
+    expose: 
+      - "8000"
     depends_on:
       - postgres

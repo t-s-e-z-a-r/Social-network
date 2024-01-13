@@ -9,7 +9,7 @@ function Chat(props) {
     const [message, setMessage] = React.useState('');
     const [ws, setWs] = React.useState(null); // Initialize ws state
     const chatData = useSelector((state) => state.chat);
-    const user = useSelector((state) => state.user);
+    const user = useSelector((state) => state.auth);
     const dispatch = useDispatch()
     React.useEffect(() => {
         const ws = API.WebSocket(user.id, chatData.id);
