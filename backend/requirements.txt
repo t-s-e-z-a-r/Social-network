@@ -11,3 +11,4 @@ pyjwt
 typing
 alembic
 uvicorn[standard]
+python-decouple

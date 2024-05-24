@@ -26,8 +26,4 @@ To start the project, follow these steps:
    
  ```bash ./scripts/base.sh start ```
 
-2. Run the following command to perform a database upgrade:
-
- ```bash ./scripts/base.sh db_upgrade ```
-
-These commands are essential for the initial setup and configuration of the project.
+This command are essential for the initial setup and configuration of the project.

@@ -4,11 +4,10 @@ import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { Await, useNavigate} from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { AuthRequest } from '../../API/Auth';
 import { useDispatch } from "react-redux";
 import { setCredentials } from '../../API/slice';
-import API from '../../API';
 import { GoogleLogin } from '@react-oauth/google';
 import {
   LoginSocialFacebook,
